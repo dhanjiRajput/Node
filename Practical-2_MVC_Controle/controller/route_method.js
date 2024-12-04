@@ -21,7 +21,7 @@ const getById = async(req,res)=>{
 
 const createData = async(req,res)=>{
     try {
-        const data= await Student.create(req.body);
+        const data= await Student.create(req.body); 
         res.status(201).send(data);
     } catch (error) {
         res.status(500).send({err:error.message});
@@ -34,7 +34,7 @@ const updateData = async(req,res)=>{
         const data= await Student.getByIdAndUpdate(id,req.body,{new:true});
         res.status(201).send(data);
     } catch (error) {
-        res.status(500).send({err:error.message});
+        res.status(500).send({err:error.message}); 
     }
 };
 
