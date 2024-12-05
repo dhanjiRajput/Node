@@ -1,7 +1,7 @@
 const isvalid=(req,res,next)=>{
-     let {img,title,price,description,category} = req.body;
+     let {title,price,description,category} = req.body;
 
-     if(!img || !title || !price || !description || !category){
+     if(!title || !price || !description || !category){
         res.send("Insufficient information.....");
      }else{
         next();
