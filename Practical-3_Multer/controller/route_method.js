@@ -17,7 +17,7 @@ try {
 } catch (error) {
     res.status(500).send({err:error.message});
 }
-};
+}; 
 
 const createProduct=async(req,res)=>{
     console.log(req.file);

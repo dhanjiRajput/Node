@@ -10,4 +10,4 @@ Route.post("/",uploadImage.single("img"),isvalid,createProduct);
 Route.patch("/:id",updateProduct);
 Route.delete("/",deleteProduct);
 
-module.exports = Route;
+module.exports = Route; 
