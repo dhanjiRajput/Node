@@ -1,4 +1,4 @@
-const User = require("../Model/user")
+  const User = require("../Model/user")
 
 const login=(req,res)=>{
     res.render('login');
@@ -30,7 +30,7 @@ const getUserByID=async(req,res)=>{
 };
 
 const getUser=async(req,res)=>{
-    let data=await User.find();
+    let data=await User.find(); 
     res.send(data);
 };
 
@@ -60,4 +60,4 @@ const loginUser=async(req,res)=>{
   return res.send("Loggd In...");
 };
 
-module.exports={createUser,getUserByID,getUser,updateUser,deleteUser,login,signup,loginUser};
+module.exports={createUser,getUserByID,getUser,updateUser,deleteUser,login,signup,loginUser}; 

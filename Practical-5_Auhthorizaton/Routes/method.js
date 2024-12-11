@@ -14,3 +14,4 @@ Api_Method.delete("/:id",deleteUser);
 Api_Method.post("/login",loginUser);
 
 module.exports=Api_Method;
+ 
