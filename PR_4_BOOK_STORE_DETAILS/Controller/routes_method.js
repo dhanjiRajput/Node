@@ -1,31 +1,56 @@
 const Book = require("../Model/books");
 
+const getStore = async(req,res)=>{
+    res.send("welcome to the book store")
+}
+
 const getbook=async(req,res)=>{
-    let data= await Book.find();
-    res.send(data);
+    try {
+        let data= await Book.find();
+        res.send(data);
+    } catch (error) {
+        console.log("Error getting book", error);
+    }
 };
 
 const getbookbyid=async(req,res)=>{
-    let {id}=req.params;
-    let data= await Book.findById(id);
-    res.send(data);
+    try {
+        let {id}=req.params;
+        let data= await Book.findById(id);
+        if (!data) return res.status(404).json({ message: "Book not found" });
+        res.send(data);
+    } catch (error) {
+        console.log("Error getting book", error);
+    }
 };
 
 const addbook=async(req,res)=>{
-    let data= await Book.create();
-    res.send(data);
+    try {
+        let data= await Book.create();
+        res.send(data);
+    } catch (error) {
+        console.log("Error creating book", error);
+    }
 };
 
 const updatebook=async(req,res)=>{
-    let {id}=req.params;
-    let data= await Book.findByIdAndUpdate(id,req.body,{new:true});
-    res.send(data);
+    try {
+        let {id}=req.params;
+        let data= await Book.findByIdAndUpdate(id,req.body,{new:true});
+        res.send(data);
+    } catch (error) {
+        console.log("Error getting book", error);
+    }
 };
 
 const deletebook=async(req,res)=>{
-    let {id}=req.params;
-    let data= await Book.findByIdAndDelete(id);
-    res.send(data);
+    try {
+        let {id}=req.params;
+        let data= await Book.findByIdAndDelete(id);
+        res.send(data);
+    } catch (error) {
+        console.log("Error getting book", error);
+    }
 };
 
 const filterBooks = async (req, res) => {
@@ -50,4 +75,4 @@ const filterBooks = async (req, res) => {
 };
 
 
-module.exports={getbook,getbookbyid,addbook,updatebook,deletebook,filterBooks};
+module.exports={getbook,getbookbyid,addbook,updatebook,deletebook,filterBooks,getStore};
