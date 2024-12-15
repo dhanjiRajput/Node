@@ -11,11 +11,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookies());
 
 
-app.set('view engine', 'ejs');  
+app.set('view engine', 'ejs');
 app.set("Views",path.join(__dirname,"Views"));
 app.use(express.static(path.join(__dirname,"Public")));
 
-app.get("/",isLoggedIn, (req, res) => {
+app.get("/", isLoggedIn,(req, res) => {
     let {username}=req.cookies;
      res.render("index",{username});
 });

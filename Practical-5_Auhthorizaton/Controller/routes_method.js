@@ -47,7 +47,7 @@ const deleteUser=async(req,res)=>{
 };
 
 const loginUser=async(req,res)=>{
-  const {email ,password}=req.body;
+  const {email ,password,username}=req.body;
   let isExist= await User.findOne({email:email});
 
   if(!isExist){
@@ -57,7 +57,9 @@ const loginUser=async(req,res)=>{
   if(isExist.password!=password){
     return res.send("Invalid password...");
   }
+  res.cookie('username', isExist.username);
   return res.send("Loggd In...");
 };
+  
 
 module.exports={createUser,getUserByID,getUser,updateUser,deleteUser,login,signup,loginUser}; 

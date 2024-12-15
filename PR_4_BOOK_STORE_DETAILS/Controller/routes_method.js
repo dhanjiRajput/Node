@@ -58,7 +58,7 @@ const filterBooks = async (req, res) => {
     let query = {};
     if (author){
         query.author = author;
-    } 
+    }
     if (category){
         query.category = category;
     } 
