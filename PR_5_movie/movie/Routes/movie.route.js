@@ -4,7 +4,7 @@ const isvalidmovie = require('../Middlewares/isvalid.movie');
 const movieRouter=Router();
 
 movieRouter.get("/user",getUserMovies);
-movieRouter.post("/movie/create",isvalidmovie,createMovie);  
+movieRouter.post("/movie/create",isvalidmovie,createMovie);
 movieRouter.patch("/movie/update/:id",updateMovie);
 movieRouter.delete("/movie/delete",deleteMovie);
 movieRouter.patch("/movie/rating/:id",updateRating);
