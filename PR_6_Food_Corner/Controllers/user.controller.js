@@ -8,6 +8,7 @@ const loginPage=(req,res)=>{
     res.render("login");
 };
 
+
 const createUser=async(req,res)=>{
     try {
         let {email}=req.body;
@@ -17,7 +18,7 @@ const createUser=async(req,res)=>{
             return res.status(400).json({message:"Email already exists"});
         }else{
             let user=await User.create(req.body);
-            res.send(user);
+            res.status(201).json(user);
         }
         res.cookie("name",isexist.name);
         res.cookie("user_id",isexist.id);
@@ -50,4 +51,4 @@ const loginUser=async(req,res)=>{
     }
 };
 
-module.exports={createUser,loginUser/*,signupPage,loginPage*/};
+module.exports={createUser,loginUser,signupPage,loginPage};
