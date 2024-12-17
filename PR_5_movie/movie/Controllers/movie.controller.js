@@ -12,7 +12,7 @@ const getUserMovies=async(req,res)=>{
 const createMovie=async(req,res)=>{
     try {
         let movie=await Movie.create(req.body);
-        res.status(200).json(movie);
+        res.status(201).json(movie);
     } catch (error) {
         res.status(500).json({error: error});
     }
@@ -64,16 +64,13 @@ const updateComment=async(req,res)=>{
 };
 
 const deleteMovie=async(req,res)=>{
-    try {
-        const { id } = req.params;
-        const deletedMovie = await Movie.findByIdAndDelete(id);
-        if (!deletedMovie) {
-          return res.status(404).json({ error: 'Movie not found' });
+        let {role}=req.body;
+
+        if(role=='Admin'){
+          let { id } = req.params;
+          const deletedMovie = await Movie.findByIdAndDelete(id);
+          res.status(200).json(deletedMovie);
         }
-        res.json({ message: 'Movie deleted successfully' });
-      } catch (error) {
-        res.status(500).json({ error: error.message });
-      }
 };
 
 const filterMovie = async (req, res) => {

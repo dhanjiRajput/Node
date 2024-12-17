@@ -21,7 +21,7 @@ app.get("/",(req,res)=>{
 
 app.use("/user",userRouter);
 
-app.use("/",movieRouter);
+app.use("/movie",movieRouter);
 
 const PORT=process.env.PORT || 8090;
 app.listen(PORT,()=>{

@@ -2,21 +2,8 @@ const User = require("../Models/user.schema");
 
 
 const userSignup=async(req,res)=>{
-    try {
-        let {email}=req.body;
-        
-        let isExist =await User.findOne({email:email});
-    
-        if(isExist){
-            return res.status(400).json({message:"Email already exists"});
-        }else{
-            res.cookie("username",isExist.username);
-            let user=await User.create(req.body);
-            return res.status(201).json(user);
-        }
-    } catch (error) {
-        res.status(500).json({error: error});
-    }
+    let user=await User.create(req.body);
+    return res.status(201).json(user);
 };
 
 const deleteUser = async(req,res)=>{
@@ -34,19 +21,13 @@ const deleteUser = async(req,res)=>{
 
 const userLogin = async(req,res)=>{
     try {
-        let {email,password}=req.body;
+        let {username,password}=req.body;
             
-        let isExist =await User.findOne({email:email});
-    
-        if(!isExist){
-            return res.send("User Not Found");
-        }
+        let isExist =await User.findOne({username:username});
     
         if(isExist.password !=password){
             return res.status(401).json({error:"Invalid username or password"});
         }
-
-        res.cookie("username",isExist.username);
         return res.status(200).json({message:"Logged in successfully"});
     } catch (error) {
         res.status(500).json({error: error});
