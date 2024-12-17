@@ -2,7 +2,7 @@ const express = require('express');
 const dbconnect = require('./Config/db');
 const userRouter = require('./Routes/user.route');
 const movieRouter = require('./Routes/movie.route');
-const cookiparser = require('cooki-parser');
+const cookiparser = require('cookie-parser');
 const path=require('path');
 const app = express();
 

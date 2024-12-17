@@ -1,5 +1,5 @@
 const {Router} =require("express");
-const { getUser, userSignup, userLogin, deleteUser } = require("../Controllers/user.controller");
+const {userSignup, userLogin, deleteUser } = require("../Controllers/user.controller");
 const isvalidSignup = require("../Middlewares/isvalid.signup");
 const isvalidLogin = require("../Middlewares/isvalid.login");
 

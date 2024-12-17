@@ -3,13 +3,13 @@ const { getUserMovies, createMovie, updateMovie, deleteMovie, updateRating, upda
 const isvalidmovie = require('../Middlewares/isvalid.movie');
 const movieRouter=Router();
 
-movieRouter.get("/user",getUserMovies);
-movieRouter.post("/movie/create",isvalidmovie,createMovie);
-movieRouter.patch("/movie/update/:id",updateMovie);
-movieRouter.delete("/movie/delete",deleteMovie);
-movieRouter.patch("/movie/rating/:id",updateRating);
-movieRouter.patch("/movie/comment/:id",updateComment);
-movieRouter.get("/movie/filter",filterMovie);
+movieRouter.get("/",getUserMovies);
+movieRouter.post("/create",isvalidmovie,createMovie);
+movieRouter.patch("/update/:id",updateMovie);
+movieRouter.delete("/delete",deleteMovie);
+movieRouter.patch("/rating/:id",updateRating);
+movieRouter.patch("/comment/:id",updateComment);
+movieRouter.get("/filter",filterMovie);
 
 module.exports=movieRouter;
 

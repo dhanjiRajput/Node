@@ -20,57 +20,60 @@ const createMovie=async(req,res)=>{
 
 const updateMovie=async(req,res)=>{
     try {
-        let {movieid}=req.body;
-        let {id}=req.params;
-        if(movieid==id){
-            let updatedMovie=await Movie.findByIdAndUpdate(id,req.body,{new:true});
-            res.status(200).json(updatedMovie);
-        }else{
-            res.status(400).json({error: "movie not found"});
+        const { id } = req.params;
+        const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, { new: true });
+        if (!updatedMovie) {
+          return res.status(404).json({ error: 'Movie not found' });
         }
-    } catch (error) {
-        res.status(500).json({error: error});
-    }
+        res.status(200).json(updatedMovie);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
 };
 
 const updateRating=async(req,res)=>{
     try {
-        let {movieid}=req.body;
-        let {id}=req.params;
-        if(movieid==id){
-            let updatedMovie=await Movie.findByIdAndUpdate(id,{$set:{rating:req.body.rating}},{new:true});
-            res.status(200).json(updatedMovie);
-        }else{
-            res.status(400).json({error: "movie not found"});
+        const { id } = req.params;
+        const { value } = req.body;
+        const movie = await Movie.findById(id);
+        if (!movie) {
+          return res.status(404).json({ error: 'Movie not found' });
         }
-    } catch (error) {
-        res.status(500).json({error: error});
-    }
+        movie.ratings.push({ value });
+        await movie.save();
+        res.status(200).json(movie);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
 };
 
 const updateComment=async(req,res)=>{
     try {
-        let {movieid}=req.body;
-        let {id}=req.params;
-        if(movieid==id){
-            let updatedMovie=await Movie.findByIdAndUpdate(id,{$push:{comments:req.body.comment}},{new:true});
-            res.status(200).json(updatedMovie);
-        }else{
-            res.status(400).json({error: "movie not found"});
+        const { id } = req.params;
+        const { text } = req.body;
+        const movie = await Movie.findById(id);
+        if (!movie) {
+          return res.status(404).json({ error: 'Movie not found' });
         }
-    } catch (error) {
-        res.status(500).json({error: error});
-    }
+        movie.comments.push({ text });
+        await movie.save();
+        res.status(200).json(movie);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
 };
 
 const deleteMovie=async(req,res)=>{
     try {
-        let {id}=req.params;
-        let deletedMovie=await Movie.findByIdAndDelete(id);
-        res.status(200).json(deletedMovie);
-    } catch (error) {
-        res.status(500).json({error: error});
-    }
+        const { id } = req.params;
+        const deletedMovie = await Movie.findByIdAndDelete(id);
+        if (!deletedMovie) {
+          return res.status(404).json({ error: 'Movie not found' });
+        }
+        res.json({ message: 'Movie deleted successfully' });
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
 };
 
 const filterMovie = async (req, res) => {

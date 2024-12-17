@@ -10,8 +10,9 @@ const userSignup=async(req,res)=>{
         if(isExist){
             return res.status(400).json({message:"Email already exists"});
         }else{
-           let user=await User.create(req.body);
-           return res.status(201).json(user);
+            res.cookie("username",isExist.username);
+            let user=await User.create(req.body);
+            return res.status(201).json(user);
         }
     } catch (error) {
         res.status(500).json({error: error});
@@ -45,6 +46,7 @@ const userLogin = async(req,res)=>{
             return res.status(401).json({error:"Invalid username or password"});
         }
 
+        res.cookie("username",isExist.username);
         return res.status(200).json({message:"Logged in successfully"});
     } catch (error) {
         res.status(500).json({error: error});
