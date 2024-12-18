@@ -4,7 +4,7 @@ const isvalidLogin=async(req,res,next)=>{
         let {username,password}=req.body;
     
         if(!username ||!password){
-            return res.status(400).json({error: "all fields are required"});
+            return res.status(401).json({error: "all fields are required"});
         }else{
             next();
         }

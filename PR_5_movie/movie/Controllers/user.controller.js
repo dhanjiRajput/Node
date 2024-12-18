@@ -24,6 +24,10 @@ const userLogin = async(req,res)=>{
         let {username,password}=req.body;
             
         let isExist =await User.findOne({username:username});
+
+        if(!isExist){
+            return res.status(401).json({error:"Invalid username or password"});
+        }
     
         if(isExist.password !=password){
             return res.status(401).json({error:"Invalid username or password"});

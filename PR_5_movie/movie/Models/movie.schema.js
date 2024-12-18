@@ -9,7 +9,7 @@ const movieSchema=new mongoose.Schema({
     image:String,
     ratings: [
       {
-        value: Number,
+        rating: Number,
         min: Number,
         max: Number,
       },

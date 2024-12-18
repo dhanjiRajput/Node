@@ -32,19 +32,24 @@ const updateMovie=async(req,res)=>{
 };
 
 const updateRating=async(req,res)=>{
-    try {
-        const { id } = req.params;
-        const { value } = req.body;
-        const movie = await Movie.findById(id);
-        if (!movie) {
-          return res.status(404).json({ error: 'Movie not found' });
-        }
-        movie.ratings.push({ value });
-        await movie.save();
-        res.status(200).json(movie);
-      } catch (error) {
-        res.status(500).json({ error: error.message });
-      }
+  const { id } = req.params;
+  const { rating } = req.body;
+
+  if (typeof rating !== 'number' || rating < 0 || rating > 10) {
+    return res.status(401).json({ error: "rating must be a number between 0 and 10" });
+  }
+
+  try {
+    const movie = await Movie.findById(id);
+    if (!movie) {
+      return res.status(404).json({ error: "movie not found" });
+    }
+    movie.ratings = rating;
+    await movie.save();
+    res.status(200).json(movie);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 const updateComment=async(req,res)=>{
@@ -64,13 +69,17 @@ const updateComment=async(req,res)=>{
 };
 
 const deleteMovie=async(req,res)=>{
-        let {role}=req.body;
+  const { id } = req.params;
 
-        if(role=='Admin'){
-          let { id } = req.params;
-          const deletedMovie = await Movie.findByIdAndDelete(id);
-          res.status(200).json(deletedMovie);
-        }
+  try {
+    const deletedMovie = await Movie.findByIdAndDelete(id);
+    if (!deletedMovie) {
+      return res.status(404).json({ error: "movie not found" });
+    }
+    res.status(200).json(deletedMovie);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 const filterMovie = async (req, res) => {
