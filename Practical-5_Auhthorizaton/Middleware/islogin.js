@@ -1,6 +1,7 @@
+
 const isLoggedIn =(req,res,next) => {
-    let {username}=req.cookies
-    if(username){
+    // let {username}=req.cookies;
+    if(req.isAuthenticated() && req.user){
         next();
     }
     else{
