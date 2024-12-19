@@ -10,7 +10,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookies());
 
-
 app.set('view engine', 'ejs');
 app.set("Views",path.join(__dirname,"Views"));
 app.use(express.static(path.join(__dirname,"Public")));
