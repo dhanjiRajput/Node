@@ -1,5 +1,5 @@
 const {Router}=require('express');
-const { getUser, getUserByID, createUser, updateUser, deleteUser, login, signup, loginUser } = require('../Controller/routes_method');
+const { getUser, getUserByID, createUser, updateUser, deleteUser, login, signup, loginUser, sendMail ,sentotp} = require('../Controller/routes_method');
 const passport = require('passport');
 
 const Api_Method=Router();
@@ -17,5 +17,7 @@ Api_Method.post("/login",passport.authenticate("local"),(req,res)=>{
     res.send("Loggd In...");
 });
 
+Api_Method.post("/mail",sendMail);
+Api_Method.post("/sentotp",sentotp);
+
 module.exports=Api_Method;
- 

@@ -144,7 +144,8 @@ You are tasked with building an API for a Blog. The project should include the f
 
 # - do not use required in form
 
-5. **Authorization Check:** Before rendering the form, perform an authorization check. If a regular user is logged in and not an admin, show a message such as `You are not authorized to access this page.` and prevent them from accessing the form. you can use cookies to verify
+5. **Authorization Check:** Before rendering the form, perform an authorization check. If a regular user is logged in and not an admin, 
+    show a message such as `You are not authorized to access this page.` and prevent them from accessing the form. you can use cookies to verify
 
 - admin can not add comments and like to any blogs
 
@@ -313,6 +314,3 @@ let query = req.query.blogs;
 
 **Best of Luck!**
 ```
-
-
-

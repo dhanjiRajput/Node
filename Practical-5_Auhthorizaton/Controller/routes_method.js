@@ -1,5 +1,6 @@
   const User = require("../Model/user");
   const bcrypt = require("bcrypt");
+const sendingMail = require("../Services/mail.service");
 
 const login=(req,res)=>{
     res.render('login');
@@ -64,6 +65,31 @@ const loginUser=async(req,res)=>{
   res.cookie('username', isExist.username);
   return res.send("Loggd In...");
 };
-  
 
-module.exports={createUser,getUserByID,getUser,updateUser,deleteUser,login,signup,loginUser}; 
+const sendMail=async(req,res)=>{
+  const {to,subject,content}=req.body;
+
+  await sendingMail(to,subject,content);
+  res.send("Mail Sent..."+to);
+};
+  
+const sentotp = async (req, res) => {
+  const { email } = req.body;
+
+  let isExists = await User.findOne({ email: email });
+  if (!isExists) {
+    return res.send("user not found");
+  }
+  try {
+    let otp = Math.round(Math.random() * 1000000);
+   // otps.set(otp, email);
+
+    let html = `<h1>OTP : ${otp}</h1>`;
+    await sendingMail(email, "password reset", html);
+   // res.redirect("/user/reset-password");
+  } catch (error) {
+    res.send(error.message);
+  }
+};
+
+module.exports={createUser,getUserByID,getUser,updateUser,deleteUser,login,signup,loginUser,sendMail,sentotp};
