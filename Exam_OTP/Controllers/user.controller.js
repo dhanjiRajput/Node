@@ -1,82 +1,92 @@
-const User = require("../Model/user.model");
+const User=require("../Model/user.model");
 const sendigmail = require("../Service/mailservice");
+const bcrypt=require("bcrypt");
 
-
-const signuppage=(req,res)=>{
+const signuppage = (req, res) => {
     res.render("signup");
 };
 
-const loginpage=async(req,res)=>{
+const loginpage = async (req, res) => {
     res.render("login");
 };
 
-const createuser=async (req, res) => {
-    const { name, email, password } = req.body;
+const otppage = async (req, res) => {
+    res.render("otp");
+};
 
-    const isexist=await User.findOne({email:email});
+const resetpage = async (req, res) => {
+    res.render("reset");
+};
+
+const createuser = async (req, res) => {
+   
+    const { email ,password} = req.body;
+
+    const isexist = await User.findOne({ email: email});
 
     if (isexist) {
         return res.status(400).json({ message: "Email already exist" });
-    }else{
-        let has=await bcrypt.hash(password,10);
-        req.body.password = has;
-        const user=await User.create(req.body);
-        res.send(user);
+    } else {
+
+       let has=await bcrypt.hash(password,10);
+       req.body.password = has;
+       let user = await User.create(req.body);
+       return res.status(201).json(user);
     }
 };
 
-const login=async(req,res)=>{
-    
-    const user=await User.findOne({email:email});
+const login = async (req, res) => {
 
-    if(!user){
-        return res.status(404).json({ message:"User not found" });
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email: email });
+
+    if (!user) {
+        return res.send( "User not found" );
     }
+    const ismatched=await bcrypt.compare(password,user.password);
 
-    const match=await bcrypt.compare(password,user.password);
-
-    if(!match){
-        return res.status(404).json({ message:"Invalid Credentials" });
+    if(!ismatched){
+        return res.send("Invalid Password");
     }
-
-    res.json("Success");
+    return res.send("Logged In");
 };
 
-const sendmail=async()=>{
-    const {to,subject,text}=req.body;
 
-    await sendigmail(to,subject,text);
-    res.send("mail to " + to);
+let otps = new Map();
+const sentotp = async (req, res) => {
+    const { email } = req.body;
+    try {
+        isExists = await User.findOne({ email: email });
+        if (!isExists) {
+            return res.status(400).json({ error: "User not found" });
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000);
+
+        otps.set(Number(otp), email);
+
+        await sendigmail(email, "OTP", "Your OTP is: " + otp);
+        return res.redirect("/otp");
+    } catch (error) {
+        res.send(error.message);
+    }
+};
+
+const verifyotp = async (req, res) => {
+    const { otp, password } = req.body;
+
+    let data = otps.get(Number(otp));
+
+    if (!data) {
+        return res.status(400).json({ error: "Invalid OTP" });
+    }
+    const hash = await bcrypt.hash(password, 10);
+    let user = await User.findOne({ email: data });
+    user.password = hash;
+
+    user.save();
+
+    res.send("Password reset successfully");
 }
-
-let otps=new Map();
-const sentotp=async(req,res)=>{
-    const {email}=req.body;
-    const otp=Math.floor(Math.random()*900000)+100000;
-
-    const isexist=await User.findOne({email:email});
-
-    if(!isexist){
-        return res.status(404).json({ message:"User not found" });
-    }
-
-    otps.set(Number(otp),email);
-    await sendigmail(email,"OTP",otp);
-    res.send("suceess");
-};
-
-const verifyotp=async(req,res)=>{
-    const {otp,password}=req.body;
-
-    const email=otps.get(Number(otp));
-
-    if(!email){
-        return res.status(404).json({ message:"OTP Not Found" });
-    }
-
-    const data=await User.findOne({email:email});
-    data.password=await bcrypt.hash(password,10);
-
-    data.save();
-}
-module.exports = {createuser,login,sendmail,verifyotp,sentotp};
+module.exports = { createuser, login, verifyotp, sentotp, signuppage, loginpage, otppage ,resetpage};
