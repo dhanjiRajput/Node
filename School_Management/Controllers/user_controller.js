@@ -47,5 +47,4 @@ const viewAssignedTeacher=async (req, res) => {
     const student = await User.findById(id).populate("assignedTeachers");
     res.status(200).json(student.assignedTeachers);
 };
-
 module.exports = {createUser, viewUser,assignTeacher,viewAssignedStudent,viewAssignedTeacher};
