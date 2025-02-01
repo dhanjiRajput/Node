@@ -1,7 +1,7 @@
 const User = require("../Models/user_model");
 
 exports.register=async(data)=>{
-    const user=await User.create(data);
+    let user=await User.create(data);
     return user;
 };
 
@@ -15,8 +15,8 @@ exports.getUserById=async(id)=>{
     return user;
 };
 
-exports.updateUser=async(data,id)=>{
-    const user= await User.findByIdAndUpdate(id,data,{new:true});
+exports.updateUser=async(id,data)=>{
+    const user=await User.findByIdAndUpdate(id,data,{new:true});
     return user;
 };
 
@@ -30,7 +30,12 @@ exports.deleteUser=async(id)=>{
     return user;
 };
 
+exports.blockUser=async(id)=>{
+    const user=await User.findByIdAndUpdate(id,{isActive:false},{new:true});
+    return user;
+};
+
 exports.getUserByQuery=async(query)=>{
-    const users=await User.find(query);
-    return users;
+    let user=await user.findOne(query);
+    return user;
 };
