@@ -1,6 +1,7 @@
 const userRepository=require("../Repository/user_repo");
 const { hashPassword, generateToken, comparePasword } = require("../Utils/helper");
 
+let map=new Map();
 exports.createUser=async(data)=>{
     let user=await userRepository.getUserByEmail(data.email);
 
@@ -19,6 +20,9 @@ exports.createUser=async(data)=>{
         username:user.username,
         role:user.role
     });
+
+    let otp=Math.round(Math.random()*1000);
+    map.set(token,otp);
     return token;
 };
 

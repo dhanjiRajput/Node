@@ -20,19 +20,14 @@ exports.updateUser=async(id,data)=>{
     return user;
 };
 
-exports.getUsers=async()=>{
-    const users=await User.find({});
-    return users;
-};
-
 exports.deleteUser=async(id)=>{
-    const user=await User.findByIdAndDelete(id);
-    return user;
-};
-
-exports.blockUser=async(id)=>{
     const user=await User.findByIdAndUpdate(id,{isActive:false},{new:true});
     return user;
+};
+
+exports.getAllUsers=async()=>{
+    const users=await User.find({});
+    return users;
 };
 
 exports.getUserByQuery=async(query)=>{
