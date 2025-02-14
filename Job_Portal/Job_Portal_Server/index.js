@@ -2,10 +2,12 @@ const express = require('express');
 const dbconnect = require('./Config/db');
 const index = require('./Routes');
 const decodeToken = require('./Middleware/decode');
+const cors=require("cors");
 require("dotenv").config();
 const app = express();
 
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }));
 
