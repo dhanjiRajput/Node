@@ -1,12 +1,15 @@
 const express = require('express');
 const dbconnect = require('./Config/db');
-const indexUser = require('./Routes');
+const index = require('./Routes');
+const decodeToken = require('./Middleware/decode');
 require("dotenv").config();
 const app = express();
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }));
 
-app.use("/api/v1",indexUser);
+app.use("/api/v1",decodeToken,index);
 
 const port=process.env.port ||8090;
 app.listen(port,()=>{

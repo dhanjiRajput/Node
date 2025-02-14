@@ -28,14 +28,6 @@ exports.updateUser=async(req,res)=>{
     }
 };
 
-exports.getUsers=async(req,res)=>{
-    try {
-        let users=await userService.getUsers();
-        return res.send(users);
-    } catch (error) {
-        return res.status(404).send({ message: error.message });
-    }
-};
 
 exports.deleteUser=async(req,res)=>{
     let {userId}=req.params;
@@ -46,6 +38,17 @@ exports.deleteUser=async(req,res)=>{
         return res.status(404).send({ message: error.message });
     }
 };
+
+exports.getAllUsers=async(req,res)=>{
+    try {
+        let users=await userService.getAllUsers();
+        return res.send(users);
+    } catch (error) {
+        return res.status(404).send({ message: error.message });
+    }
+};
+
+
 
 exports.getUserByQuery=async(req,res)=>{
     try {
@@ -66,11 +69,11 @@ exports.getUserById=async(req,res)=>{
     }
 };
 
-exports.blockUser=async(req,res)=>{
-    let {userId}=req.params;
+exports.verifyEmail=async(req,res)=>{
+    let {token,otp}=req.params;
     try {
-        let user=await userService.blockUser(userId);
-        return res.send(user);
+        let user=await userService.verifyEmail(token,otp);
+        return res.send({message:"Verified Email"});
     } catch (error) {
         return res.status(404).send({ message: error.message });
     }

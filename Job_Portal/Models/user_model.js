@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema({
     profile_picture: String,
     isVerified: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
-
 },
     {
         timestamps: true,
