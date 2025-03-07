@@ -23,8 +23,6 @@ const decodeToken = async (req, res, next) => {
   } else {
     return res.status(403).send({ message: "You are not authorized" });
   }
-  //   console.log(req.headers["authorization"]);
-  //   next();
 };
 
 module.exports = decodeToken;
