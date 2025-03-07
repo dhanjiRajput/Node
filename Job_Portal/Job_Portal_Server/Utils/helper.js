@@ -1,41 +1,30 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 require("dotenv").config();
-
-const generateToken = async (data) => {
+const genereateToken = async (data) => {
   try {
-    let token = await jwt.sign(data, process.env.key);
+    let token = await jwt.sign(data, process.env.private_key);
     return token;
   } catch (error) {
-    throw new Error('Token Generation Failed')
+    throw new Error("Could not sign token: " + error);
   }
 };
 
 const hashPassword = async (password) => {
-  try {
-    let hashedpassword = await bcrypt.hash(password, 10);
-    return hashedpassword;
-  } catch (error) {
-    throw new Error('Password Hashing Failed')
-  }
+  let hash = await bcrypt.hash(password, 10);
+  return hash;
 };
 
-const comparePasword = async (password, hash) => {
-  try {
-    let isMatch = await bcrypt.compare(password, hash);
-    return isMatch;
-  } catch (error) {
-    throw new Error('Password Comparison Failed')
-  }
+const compare = async (hash, password) => {
+  return await bcrypt.compare(password, hash);
 };
 
 const decodeToken = async (token) => {
   try {
-    const data = await jwt.verify(token, process.env.key);
-    return data;
+    let decode = await jwt.verify(token, process.env.private_key);
+    return decode;
   } catch (error) {
-    throw new Error('Token Verification Failed')
+    throw new Error(" could not decode token: " + error);
   }
 };
-
-module.exports = { generateToken, comparePasword, hashPassword, decodeToken };
+module.exports = { genereateToken, compare, hashPassword, decodeToken };
