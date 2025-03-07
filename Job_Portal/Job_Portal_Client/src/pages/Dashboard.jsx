@@ -1,50 +1,69 @@
-import React, { useEffect, useState } from 'react'
-import { API } from '../config/API'
+import React, { useEffect, useState } from "react";
+import { API } from "../config/API";
 import { RxCross2 } from "react-icons/rx";
 import { ImCheckboxChecked } from "react-icons/im";
+
 const Dashboard = () => {
-  const [companies, setCompanies] = useState([])
+  const [companies, setCompanies] = useState([]);
+
   const getCompany = async () => {
     try {
-      let res = await API.get("/companies/admin/unverified")
-      console.log(res);
-      setCompanies(res.data)
+      let res = await API.get("/companies/admin/unverified");
+      setCompanies(res.data);
     } catch (error) {
       console.log(error);
-
     }
+  };
 
-  }
-  const approved = async (id) => {
-    let res = await API.put(`/companies/${id}`, { isVerified: true });
-    console.log(res);
+  const approveCompany = async (id) => {
+    try {
+      await API.put(`/companies/${id}`, { isVerified: true });
+      setCompanies(companies.filter(company => company._id !== id)); // Remove from list after approval
+      alert("Company approved successfully!");
+    } catch (error) {
+      console.log(error);
+      alert("Failed to approve company");
+    }
+  };
 
-  }
   useEffect(() => {
     getCompany();
   }, []);
 
-
   return (
-    <div>
-      <h1>Company List</h1>
-      {
-        // companyName location number
-        companies.map(({ companyName, location, number, _id }) => (
-          <div>
-            <h1>{companyName}</h1>
-            <p>{location}</p>
-            <p>{number}</p>
-            <div>
-              <button onClick={() => approved(_id)}>approved  <ImCheckboxChecked /> </button>
-              <button>reject   <RxCross2 color='red' /></button>
-
+    <div className="container mt-5">
+      <h1 className="text-center mb-4">Company List</h1>
+      <div className="row">
+        {companies.length > 0 ? (
+          companies.map(({ companyName, location, number, _id }) => (
+            <div key={_id} className="col-md-4">
+              <div 
+                className="card p-3 shadow"
+                style={{ borderRadius: "12px", backgroundColor: "#f8f9fa" }}
+              >
+                <h5 className="mb-2">{companyName}</h5>
+                <p className="mb-1"><strong>Location:</strong> {location}</p>
+                <p className="mb-3"><strong>Contact:</strong> {number}</p>
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="btn btn-success"
+                    onClick={() => approveCompany(_id)}
+                  >
+                    Approve <ImCheckboxChecked className="ms-1" />
+                  </button>
+                  <button className="btn btn-danger">
+                    Reject <RxCross2 className="ms-1" />
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        ))
-      }
+          ))
+        ) : (
+          <p className="text-center">No unverified companies found.</p>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
